@@ -1,5 +1,5 @@
 {
-  "name": "nftartsy",
+  "name": "nft-marketplace",
   "license": "MIT",
   "scripts": {
     "codegen": "graph codegen --debug --output-dir src/entities/",

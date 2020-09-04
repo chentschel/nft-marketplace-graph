@@ -3,6 +3,16 @@
     "inputs": [
       {
         "internalType": "string",
+        "name": "_name",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_symbol",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
         "name": "_baseUri",
         "type": "string"
       }
@@ -137,6 +147,19 @@
     "type": "event"
   },
   {
+    "inputs": [],
+    "name": "_INTERFACE_ID_ERC721_VERIFY_FINGERPRINT",
+    "outputs": [
+      {
+        "internalType": "bytes4",
+        "name": "",
+        "type": "bytes4"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -200,6 +223,34 @@
       }
     ],
     "name": "create",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_metaDataURI",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_metaData",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "_marketplace",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_encodedCallData",
+        "type": "bytes"
+      }
+    ],
+    "name": "createPub",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

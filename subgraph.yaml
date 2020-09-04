@@ -1,37 +1,9 @@
 specVersion: 0.0.2
-description: NFT Artsy
-repository: https://github.com//
+description: NFT Marketplace
+repository: https://github.com/chentschel/nft-marketplace-graph
 schema:
   file: ./schema.graphql
 dataSources:
-  - kind: ethereum/contract
-    # ---------------------------------------------------------
-    # Orders  -------------------------------------------------
-    # ---------------------------------------------------------
-    name: Marketplace
-    network: goerli
-    source:
-      address: "0x1C2e66D857cE3d40BD7ba0D80Fc4e98c231119Ce"
-      abi: Marketplace
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - Order
-        - NFT
-      abis:
-        - name: Marketplace
-          file: ./abis/Marketplace.json
-      eventHandlers:
-        - event: OrderCreated(bytes32,indexed uint256,indexed address,address,uint256,uint256)
-          handler: handleOrderCreated
-        - event: OrderSuccessful(bytes32,indexed uint256,indexed address,address,uint256,indexed address)
-          handler: handleOrderSuccessful
-        - event: OrderCancelled(bytes32,indexed uint256,indexed address,address)
-          handler: handleOrderCancelled
-      file: ./src/handlers/marketplace.ts
-
   - kind: ethereum/contract
     # ---------------------------------------------------------
     # ArtToken  -----------------------------------------------
@@ -39,7 +11,7 @@ dataSources:
     name: ArtToken
     network: goerli
     source:
-      address: "0x98193ea10AE8AC2732DA62a04e0C39E009CAFAE3"
+      address: "0x8E6a891B0800b8e84Da23F0d0F3c04F0594f20D5"
       abi: ArtToken
     mapping:
       kind: ethereum/events
@@ -56,3 +28,43 @@ dataSources:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
       file: ./src/handlers/arttoken.ts
+
+  - kind: ethereum/contract
+    # ---------------------------------------------------------
+    # Marketplace  --------------------------------------------
+    # ---------------------------------------------------------
+    name: Marketplace
+    network: goerli
+    source:
+      address: "0xB221dA0C26BB357F06aAdfFe6D04a5B9E29726b5"
+      abi: Marketplace
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Order
+        - Bid
+        - NFT
+      abis:
+        - name: Marketplace
+          file: ./abis/Marketplace.json
+      eventHandlers:
+        # Order Events
+        - event: OrderCreated(bytes32,indexed address,indexed address,indexed uint256,uint256,uint256)
+          handler: handleOrderCreated
+        - event: OrderUpdated(bytes32,uint256,uint256)
+          handler: handlerOrderUpdated
+        - event: OrderSuccessful(bytes32,indexed address,uint256)
+          handler: handleOrderSuccessful
+        - event: OrderCancelled(bytes32)
+          handler: handleOrderCancelled
+        # Bid Events
+        - event: BidCreated(bytes32,indexed address,indexed uint256,indexed address,uint256,uint256)
+          handler: handleBidCreated
+        - event: BidAccepted(bytes32)
+          handler: handleBidAccepted
+        - event: BidCancelled(bytes32)
+          handler: handleBidCancelled
+      file: ./src/handlers/marketplace.ts
+

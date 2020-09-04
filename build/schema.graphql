@@ -4,8 +4,10 @@ enum OrderStatus @entity {
   cancelled
 }
 
-enum Category @entity {
-  default
+enum BidStatus @entity {
+  open
+  accepted
+  cancelled
 }
 
 # ---------------------------------------------------------
@@ -21,19 +23,42 @@ type Account @entity {
 # ---------------------------------------------------------
 # Orders --------------------------------------------------
 # ---------------------------------------------------------
-# thegraph doesn't support nested property searches, so we're doing promoting properties
-# we need from each NFT type to the Order, in order to search for them, prefixing them with search_[nft]_[prop]
 type Order @entity {
   id: ID!
-  category: Category!
-  nft: NFT
+
+  nft: NFT!
   nftAddress: Bytes!
-  txHash: Bytes!
-  owner: Bytes!
-  buyer: Bytes
-  price: BigInt!
+
   status: OrderStatus!
+
+  seller: Bytes!
+  price: BigInt!
+
+  buyer: Bytes
+
+  txHash: Bytes!
   blockNumber: BigInt!
+
+  expiresAt: BigInt!
+  createdAt: BigInt!
+  updatedAt: BigInt!
+}
+
+# ---------------------------------------------------------
+# Bids ----------------------------------------------------
+# ---------------------------------------------------------
+type Bid @entity {
+  id: ID!
+
+  order: Order!
+  bidder: Bytes!
+  price: BigInt!
+
+  txHash: Bytes!
+  blockNumber: BigInt!
+
+  status: BidStatus!
+
   expiresAt: BigInt!
   createdAt: BigInt!
   updatedAt: BigInt!
@@ -44,26 +69,27 @@ type Order @entity {
 # ---------------------------------------------------------
 type NFT @entity {
   id: ID!
-  tokenId: BigInt!
-  contractAddress: Bytes!
-  category: Category!
   owner: Account!
-  tokenURI: String
 
-  orders: [Order!] @derivedFrom(field: "nft") # History of all orders. Should only ever be ONE open order. all others must be cancelled or sold
-  activeOrder: Order
+  registryAddress: Bytes!
+  tokenId: BigInt!
 
-  name: String
-  image: String
+  # History of all orders. Should only ever be ONE open order. all others must be cancelled, expired or sold
+  orders: [Order!] @derivedFrom(field: "nft")
+  activeOrder: Order!
 
+  name: String!
+  image: String!
+  tokenURI: String!
+
+  blockNumber: BigInt!
   createdAt: BigInt!
   updatedAt: BigInt!
 
   # search indexes
-  searchOrderStatus: OrderStatus
+  searchText: String
   searchOrderPrice: BigInt
+  searchOrderStatus: OrderStatus
   searchOrderExpiresAt: BigInt
   searchOrderCreatedAt: BigInt
-
-  searchText: String
 }

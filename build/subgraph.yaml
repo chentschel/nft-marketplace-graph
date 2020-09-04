@@ -16,18 +16,27 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Order
+        - Bid
         - NFT
       abis:
         - name: Marketplace
           file: Marketplace/abis/Marketplace.json
       eventHandlers:
-        - event: OrderCreated(bytes32,indexed uint256,indexed address,address,uint256,uint256)
+        - event: OrderCreated(bytes32,indexed address,indexed address,indexed
+            uint256,uint256,uint256)
           handler: handleOrderCreated
-        - event: OrderSuccessful(bytes32,indexed uint256,indexed address,address,uint256,indexed
-            address)
+        - event: OrderUpdated(bytes32,uint256,uint256)
+          handler: handlerOrderUpdated
+        - event: OrderSuccessful(bytes32,indexed address,uint256)
           handler: handleOrderSuccessful
-        - event: OrderCancelled(bytes32,indexed uint256,indexed address,address)
+        - event: OrderCancelled(bytes32)
           handler: handleOrderCancelled
+        - event: BidCreated(bytes32,indexed address,indexed uint256,indexed address,uint256,uint256)
+          handler: handleBidCreated
+        - event: BidAccepted(bytes32)
+          handler: handleBidAccepted
+        - event: BidCancelled(bytes32)
+          handler: handleBidCancelled
       file: Marketplace/Marketplace.wasm
   - kind: ethereum/contract
     name: ArtToken

@@ -172,6 +172,29 @@ export class ArtToken extends ethereum.SmartContract {
     return new ArtToken("ArtToken", address);
   }
 
+  _INTERFACE_ID_ERC721_VERIFY_FINGERPRINT(): Bytes {
+    let result = super.call(
+      "_INTERFACE_ID_ERC721_VERIFY_FINGERPRINT",
+      "_INTERFACE_ID_ERC721_VERIFY_FINGERPRINT():(bytes4)",
+      []
+    );
+
+    return result[0].toBytes();
+  }
+
+  try__INTERFACE_ID_ERC721_VERIFY_FINGERPRINT(): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "_INTERFACE_ID_ERC721_VERIFY_FINGERPRINT",
+      "_INTERFACE_ID_ERC721_VERIFY_FINGERPRINT():(bytes4)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
+  }
+
   balanceOf(owner: Address): BigInt {
     let result = super.call("balanceOf", "balanceOf(address):(uint256)", [
       ethereum.Value.fromAddress(owner)
@@ -530,8 +553,16 @@ export class ConstructorCall__Inputs {
     this._call = call;
   }
 
-  get _baseUri(): string {
+  get _name(): string {
     return this._call.inputValues[0].value.toString();
+  }
+
+  get _symbol(): string {
+    return this._call.inputValues[1].value.toString();
+  }
+
+  get _baseUri(): string {
+    return this._call.inputValues[2].value.toString();
   }
 }
 
@@ -607,6 +638,48 @@ export class CreateCall__Outputs {
   _call: CreateCall;
 
   constructor(call: CreateCall) {
+    this._call = call;
+  }
+}
+
+export class CreatePubCall extends ethereum.Call {
+  get inputs(): CreatePubCall__Inputs {
+    return new CreatePubCall__Inputs(this);
+  }
+
+  get outputs(): CreatePubCall__Outputs {
+    return new CreatePubCall__Outputs(this);
+  }
+}
+
+export class CreatePubCall__Inputs {
+  _call: CreatePubCall;
+
+  constructor(call: CreatePubCall) {
+    this._call = call;
+  }
+
+  get _metaDataURI(): string {
+    return this._call.inputValues[0].value.toString();
+  }
+
+  get _metaData(): string {
+    return this._call.inputValues[1].value.toString();
+  }
+
+  get _marketplace(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
+
+  get _encodedCallData(): Bytes {
+    return this._call.inputValues[3].value.toBytes();
+  }
+}
+
+export class CreatePubCall__Outputs {
+  _call: CreatePubCall;
+
+  constructor(call: CreatePubCall) {
     this._call = call;
   }
 }
