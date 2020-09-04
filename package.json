@@ -1,0 +1,16 @@
+{
+  "name": "nftartsy",
+  "license": "MIT",
+  "scripts": {
+    "codegen": "graph codegen --debug --output-dir src/entities/",
+    "build": "graph build",
+    "deploy": "graph deploy chentschel/nft-marketplace --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/",
+    "create-local": "graph create chentschel/nft-marketplace --node http://localhost:8020/",
+    "remove-local": "graph remove chentschel/nft-marketplace --node http://localhost:8020/",
+    "deploy-local": "graph deploy chentschel/nft-marketplace --node http://localhost:8020/ --ipfs http://localhost:5001"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.18.0",
+    "@graphprotocol/graph-ts": "0.18.0"
+  }
+}

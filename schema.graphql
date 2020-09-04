@@ -1,0 +1,69 @@
+enum OrderStatus @entity {
+  open
+  sold
+  cancelled
+}
+
+enum Category @entity {
+  default
+}
+
+# ---------------------------------------------------------
+# Account (user) ------------------------------------------
+# ---------------------------------------------------------
+
+type Account @entity {
+  id: ID! # ETH addr
+  address: Bytes!
+  nfts: [NFT!] @derivedFrom(field: "owner")
+}
+
+# ---------------------------------------------------------
+# Orders --------------------------------------------------
+# ---------------------------------------------------------
+# thegraph doesn't support nested property searches, so we're doing promoting properties
+# we need from each NFT type to the Order, in order to search for them, prefixing them with search_[nft]_[prop]
+type Order @entity {
+  id: ID!
+  category: Category!
+  nft: NFT
+  nftAddress: Bytes!
+  txHash: Bytes!
+  owner: Bytes!
+  buyer: Bytes
+  price: BigInt!
+  status: OrderStatus!
+  blockNumber: BigInt!
+  expiresAt: BigInt!
+  createdAt: BigInt!
+  updatedAt: BigInt!
+}
+
+# ---------------------------------------------------------
+# NFT  ----------------------------------------------------
+# ---------------------------------------------------------
+type NFT @entity {
+  id: ID!
+  tokenId: BigInt!
+  contractAddress: Bytes!
+  category: Category!
+  owner: Account!
+  tokenURI: String
+
+  orders: [Order!] @derivedFrom(field: "nft") # History of all orders. Should only ever be ONE open order. all others must be cancelled or sold
+  activeOrder: Order
+
+  name: String
+  image: String
+
+  createdAt: BigInt!
+  updatedAt: BigInt!
+
+  # search indexes
+  searchOrderStatus: OrderStatus
+  searchOrderPrice: BigInt
+  searchOrderExpiresAt: BigInt
+  searchOrderCreatedAt: BigInt
+
+  searchText: String
+}
