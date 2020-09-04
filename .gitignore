@@ -2,6 +2,12 @@
 node_modules
 dist
 
+# production
+/build
+
+# dependencies
+/node_modules
+
 # local env files
 .env
 .env.local
