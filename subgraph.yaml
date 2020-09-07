@@ -11,7 +11,7 @@ dataSources:
     name: ArtToken
     network: goerli
     source:
-      address: "0x8E6a891B0800b8e84Da23F0d0F3c04F0594f20D5"
+      address: "0xC002B6C8d28A23d2AD6A32DbBC7C6004583CaFf5"
       abi: ArtToken
     mapping:
       kind: ethereum/events

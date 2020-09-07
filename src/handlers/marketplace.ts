@@ -1,4 +1,5 @@
 import { log } from "@graphprotocol/graph-ts"
+import { getNFTId } from "./utils";
 import {
   BidCreated,
   BidAccepted,
@@ -9,11 +10,8 @@ import {
   OrderSuccessful,
 } from "../entities/Marketplace/Marketplace"
 
-import { NFT, Order, Bid } from "../entities/schema"
 
-export function getNFTId(contractAddress: string, tokenId: string): string {
-  return contractAddress + '-' + tokenId
-}
+import { NFT, Order, Bid } from "../entities/schema"
 
 export function updateNFTOrderProperties(nft: NFT, order: Order): NFT {
   if (order.status == 'open') {

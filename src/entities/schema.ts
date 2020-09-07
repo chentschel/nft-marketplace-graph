@@ -237,6 +237,15 @@ export class Bid extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get nft(): string {
+    let value = this.get("nft");
+    return value.toString();
+  }
+
+  set nft(value: string) {
+    this.set("nft", Value.fromString(value));
+  }
+
   get order(): string {
     let value = this.get("order");
     return value.toString();
@@ -393,13 +402,38 @@ export class NFT extends Entity {
     }
   }
 
-  get activeOrder(): string {
-    let value = this.get("activeOrder");
-    return value.toString();
+  get bids(): Array<string> | null {
+    let value = this.get("bids");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
   }
 
-  set activeOrder(value: string) {
-    this.set("activeOrder", Value.fromString(value));
+  set bids(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("bids");
+    } else {
+      this.set("bids", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
+  get activeOrder(): string | null {
+    let value = this.get("activeOrder");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set activeOrder(value: string | null) {
+    if (value === null) {
+      this.unset("activeOrder");
+    } else {
+      this.set("activeOrder", Value.fromString(value as string));
+    }
   }
 
   get name(): string {
@@ -409,15 +443,6 @@ export class NFT extends Entity {
 
   set name(value: string) {
     this.set("name", Value.fromString(value));
-  }
-
-  get image(): string {
-    let value = this.get("image");
-    return value.toString();
-  }
-
-  set image(value: string) {
-    this.set("image", Value.fromString(value));
   }
 
   get tokenURI(): string {

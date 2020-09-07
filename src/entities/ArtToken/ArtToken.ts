@@ -93,7 +93,7 @@ export class ItemCreated__Params {
     this._event = event;
   }
 
-  get from(): Address {
+  get owner(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
